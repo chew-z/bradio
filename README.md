@@ -1,6 +1,6 @@
 # bradio
 
-Searches stations on radio-browser by name or tag. Sorting by popularity.
+cli tool for searching radio stations on radio-browser by name or tag. Sorting by popularity.
 
 ```
 bradio --name 'Milano Lounge'
@@ -10,6 +10,13 @@ bradio --tag 'ambient'
 bradio --tag 'chillout' --limit 30
 
 ```
+## Building
+
+```
+go build -o bin/bradio .
+
+```
+
 
 ## If you use mpv for listening to radio
 
