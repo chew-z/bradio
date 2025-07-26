@@ -36,12 +36,6 @@ type PopularStation struct {
 	Rank int `json:"rank"`
 }
 
-// SearchParams represents search parameters for MCP tools
-type SearchParams struct {
-	Query string `json:"query"`
-	Limit int    `json:"limit"`
-}
-
 // MCPSearchResult represents the result of a search operation for MCP tools
 type MCPSearchResult struct {
 	Query      string    `json:"query"`
@@ -56,30 +50,6 @@ type MCPPopularResult struct {
 	QueryType  string           `json:"query_type"`
 	TotalFound int              `json:"total_found"`
 	Stations   []PopularStation `json:"stations"`
-}
-
-// SearchResult represents the result of a search operation (for CLI compatibility)
-type SearchResult struct {
-	Stations []Station `json:"stations"`
-	Count    int       `json:"count"`
-	Query    string    `json:"query"`
-}
-
-// AppMode represents the application's operating mode
-type AppMode int
-
-const (
-	// ModeCLI represents command-line interface mode
-	ModeCLI AppMode = iota
-	// ModeMCP represents MCP server mode
-	ModeMCP
-)
-
-// Config holds application configuration
-type Config struct {
-	Mode      AppMode
-	MCPConfig *MCPConfig
-	CLIConfig *CLIConfig
 }
 
 // MCPConfig holds MCP server configuration
@@ -152,12 +122,5 @@ func DefaultMCPConfig() *MCPConfig {
 		Version:    "1.0.0",
 		Transport:  "stdio",
 		Port:       8080,
-	}
-}
-
-// DefaultCLIConfig returns default CLI configuration
-func DefaultCLIConfig() *CLIConfig {
-	return &CLIConfig{
-		Limit: 12,
 	}
 }

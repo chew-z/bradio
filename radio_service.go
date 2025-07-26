@@ -14,16 +14,24 @@ func NewRadioService() *RadioService {
 	return &RadioService{}
 }
 
+// validateLimit validates the limit parameter for all search operations
+func validateLimit(limit int) error {
+	if limit <= 0 {
+		return fmt.Errorf("limit must be positive, got %d", limit)
+	}
+	if limit > 1000 {
+		return fmt.Errorf("limit too high (max 1000), got %d", limit)
+	}
+	return nil
+}
+
 // SearchByName searches radio stations by name
 func (rs *RadioService) SearchByName(name string, limit int) ([]goradios.Station, error) {
 	if name == "" {
 		return nil, fmt.Errorf("name cannot be empty")
 	}
-	if limit <= 0 {
-		return nil, fmt.Errorf("limit must be positive, got %d", limit)
-	}
-	if limit > 1000 {
-		return nil, fmt.Errorf("limit too high (max 1000), got %d", limit)
+	if err := validateLimit(limit); err != nil {
+		return nil, err
 	}
 
 	stations := goradios.FetchStationsDetailed(
@@ -44,11 +52,8 @@ func (rs *RadioService) SearchByTag(tag string, limit int) ([]goradios.Station, 
 	if tag == "" {
 		return nil, fmt.Errorf("tag cannot be empty")
 	}
-	if limit <= 0 {
-		return nil, fmt.Errorf("limit must be positive, got %d", limit)
-	}
-	if limit > 1000 {
-		return nil, fmt.Errorf("limit too high (max 1000), got %d", limit)
+	if err := validateLimit(limit); err != nil {
+		return nil, err
 	}
 
 	stations := goradios.FetchStationsDetailed(
@@ -66,11 +71,8 @@ func (rs *RadioService) SearchByTag(tag string, limit int) ([]goradios.Station, 
 
 // GetPopularStations retrieves the most popular stations globally
 func (rs *RadioService) GetPopularStations(limit int) ([]goradios.Station, error) {
-	if limit <= 0 {
-		return nil, fmt.Errorf("limit must be positive, got %d", limit)
-	}
-	if limit > 1000 {
-		return nil, fmt.Errorf("limit too high (max 1000), got %d", limit)
+	if err := validateLimit(limit); err != nil {
+		return nil, err
 	}
 
 	stations := goradios.FetchAllStationsDetailed(
