@@ -60,9 +60,42 @@ bradio --tag "chillout" --limit 30
 bradio --help
 ```
 
+## MCP Server Mode
+The tool can run as an MCP (Model Context Protocol) server to integrate with AI assistants:
+
+### Starting MCP Server
+```bash
+bradio --mcp                    # Start with stdio transport
+```
+
+### Available MCP Tools
+1. **`search_radio_by_name`**
+   - Parameters: `name` (string), `limit` (optional int)
+   - Searches stations by name, sorted by click count
+
+2. **`search_radio_by_tag`**
+   - Parameters: `tag` (string), `limit` (optional int)  
+   - Searches stations by tag, sorted by click trend
+
+3. **`get_popular_stations`**
+   - Parameters: `limit` (optional int)
+   - Returns most popular stations globally
+
+### MCP Integration
+The MCP server enables AI assistants to:
+- Search radio stations programmatically
+- Get structured data about stations
+- Integrate radio discovery into conversational workflows
+
 ## Usage Patterns
-The tool is designed for integration with shell workflows, particularly:
+The tool is designed for integration with:
+
+**Shell workflows:**
 - Piping output to `fzf` for interactive selection
 - Extracting URLs for media players like `mpv`
 - The output format supports both human reading and programmatic parsing
-- Proper error handling prevents crashes and provides helpful user feedback
+
+**AI Assistant workflows:**
+- Claude, GPT, and other LLMs can use MCP tools to search stations
+- Structured responses enable automated playlist generation
+- Integration with smart home and automation systems

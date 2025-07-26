@@ -10,4 +10,4 @@ run_*
 .repomix/**
 .vscode/**
 rules/**
-
+test_*
