@@ -19,10 +19,13 @@ type CLIConfig struct {
 
 // RunCLI runs the command-line interface
 func RunCLI() error {
+	// Filter out MCP-specific flags before CLI parsing
+	filteredArgs := filterMCPFlags(os.Args)
+
 	// Reset flag package for CLI use
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 
-	config := parseCLIFlags()
+	config := parseCLIFlags(filteredArgs)
 
 	if config.ShowHelp {
 		showUsage()
@@ -42,7 +45,7 @@ func RunCLI() error {
 }
 
 // parseCLIFlags parses command-line flags
-func parseCLIFlags() *CLIConfig {
+func parseCLIFlags(args []string) *CLIConfig {
 	config := &CLIConfig{}
 
 	flag.StringVar(&config.SearchName, "name", "", "Search stations by name")
@@ -53,6 +56,8 @@ func parseCLIFlags() *CLIConfig {
 	// Custom usage function
 	flag.Usage = showUsage
 
+	// Set the arguments for the flag package to parse
+	os.Args = args
 	flag.Parse()
 	return config
 }
@@ -118,4 +123,19 @@ func fetchAndDisplayStations(radioService *RadioService, config *CLIConfig) erro
 	}
 
 	return nil
+}
+
+// filterMCPFlags removes MCP-specific flags from arguments
+func filterMCPFlags(args []string) []string {
+	filtered := make([]string, 0, len(args))
+
+	for _, arg := range args {
+		// Skip MCP-specific flags
+		if arg == "--mcp" {
+			continue
+		}
+		filtered = append(filtered, arg)
+	}
+
+	return filtered
 }
